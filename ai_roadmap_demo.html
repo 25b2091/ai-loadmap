@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIロードマップ デモ（グループ29）</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+*{box-sizing:border-box}
+:root{--blue:#1D4ED8;--blue-l:#EEF3FF;--green:#2E7D32;--green-l:#E8F5E9;--org:#B45309;--org-l:#FFF4E8;--ink:#1A1F2B;--sub:#4B5563;--line:#E3E6EB;--bg:#F5F6F8}
+body{margin:0;background:var(--bg);font-family:'Noto Sans JP',sans-serif;color:var(--ink)}
+button{font:inherit;cursor:pointer}
+.demo{background:#1A1F2B;color:#D1D5DB;font-size:12px;text-align:center;padding:6px 12px}
+header{background:#fff;border-bottom:1px solid var(--line);padding:0 24px}
+.hd{max-width:1100px;margin:0 auto;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.logo{font-weight:700;font-size:18px}
+.logo span{color:var(--blue)}
+nav{display:flex;gap:20px;font-size:14px;color:var(--sub);flex-wrap:wrap}
+nav .cur{color:var(--blue);font-weight:700}
+.steps{max-width:1100px;margin:24px auto 0;padding:0 24px;display:flex;gap:8px;flex-wrap:wrap}
+.st{flex:1 1 180px;padding:10px 14px;border-radius:10px;background:#fff;border:1px solid var(--line);font-size:13px;color:var(--sub)}
+.st b{display:block;font-size:14px;color:var(--ink)}
+.st.on{border:2px solid var(--blue);background:var(--blue-l)}
+.st.on b{color:var(--blue)}
+main{max-width:1100px;margin:0 auto;padding:24px 24px 64px}
+.screen{display:none}.screen.on{display:block}
+h1{margin:0 0 6px;font-size:28px}
+.lead{margin:0 0 24px;color:var(--sub)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:20px}
+.panel h2{margin:0 0 14px;font-size:17px}
+.radios{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:14px;font-size:14px}
+.radios label{display:flex;align-items:center;gap:6px}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.row input{flex:1 1 360px;height:48px;padding:0 14px;border:1px solid #C9CED6;border-radius:10px;font:inherit;font-size:15px}
+.btn{height:48px;padding:0 28px;border:none;border-radius:10px;background:var(--blue);color:#fff;font-weight:700;font-size:15px}
+.btn.ghost{background:#fff;color:var(--blue);border:1px solid var(--blue)}
+.btn.org{background:var(--org)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.chip{padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:13px;color:var(--sub)}
+.chip:hover{border-color:var(--blue);color:var(--blue)}
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.choice{text-align:left;padding:20px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.choice:hover{border:1px solid var(--blue);background:var(--blue-l)}
+.choice b{display:block;font-size:16px;margin-bottom:4px}
+.choice span{font-size:13px;color:var(--sub)}
+.goalbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:20px}
+.goalbar .g{font-size:18px;font-weight:700}
+.goalbar .g small{display:block;font-size:12px;color:var(--sub);font-weight:400}
+.link{background:none;border:none;color:var(--blue);font-size:14px;text-decoration:underline}
+.articles{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.art{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:10px}
+.who{display:flex;align-items:center;gap:10px}
+.av{width:44px;height:44px;border-radius:22px;background:var(--org-l);color:var(--org);font-weight:700;display:flex;align-items:center;justify-content:center}
+.who b{display:block;font-size:15px}
+.who span{font-size:12px;color:var(--sub)}
+.art h3{margin:0;font-size:15px;line-height:1.5}
+.art p{margin:0;font-size:13px;line-height:1.7;color:#374151}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:12px;padding:4px 10px;border-radius:999px;background:var(--blue-l);color:var(--blue)}
+.note{font-size:12px;color:var(--sub);margin-top:8px}
+.cta{display:flex;justify-content:center;margin-top:24px}
+.prog{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.bar{flex:1 1 300px;height:14px;background:var(--line);border-radius:999px;overflow:hidden}
+.bar div{height:100%;background:var(--green);transition:width .4s}
+.pct{font-size:22px;font-weight:700;color:var(--green)}
+.map{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:8px}
+.node{flex:0 0 150px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.box{width:130px;min-height:96px;border-radius:12px;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:14px;font-weight:700;border:2px solid transparent}
+.box small{font-weight:400;font-size:11px;margin-top:4px;opacity:.85}
+.box.done{background:var(--green);color:#fff}
+.box.next{background:#fff;color:var(--ink);border-color:var(--blue);box-shadow:0 0 0 4px var(--blue-l)}
+.box.todo{background:var(--green-l);color:#4B5563}
+.lab{font-size:12px;font-weight:700;height:18px}
+.lab.done{color:var(--green)}.lab.next{color:var(--blue)}
+.arrow{flex:0 0 24px;display:flex;align-items:center;justify-content:center;color:#9CA3AF;padding-bottom:26px}
+.side{display:flex;gap:20px;flex-wrap:wrap;margin-top:20px}
+.side>div{flex:1 1 320px}
+.ai{display:flex;gap:12px;align-items:flex-start}
+.aiic{width:40px;height:40px;flex-shrink:0;border-radius:20px;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.ai p{margin:0;font-size:14px;line-height:1.7}
+.used{display:flex;gap:10px;flex-wrap:wrap}
+.used div{padding:10px 14px;border-radius:10px;background:var(--green-l);font-size:13px}
+.used div b{display:block;font-size:12px;color:var(--green)}
+.done-msg{display:none;margin-top:16px;padding:14px;border-radius:10px;background:var(--org-l);color:#7A3E06;font-size:14px}
+</style>
+</head>
+<body>
+
+<div class="demo">グループ29 提案プロトタイプ（授業用デモ・非公式）　※表示内容はすべてサンプルです</div>
+
+<header><div class="hd">
+<div class="logo">paizaラーニング <span>× AIロードマップ</span></div>
+<nav><span>講座</span><span>スキルチェック</span><span class="cur">AIロードマップ</span><span>マイページ</span></nav>
+</div></header>
+
+<div class="steps">
+<div class="st on" data-s="1"><b>① 目標を決める</b>目標がなくても選べる</div>
+<div class="st" data-s="2"><b>② 先輩の体験を見る</b>なりたい姿をイメージ</div>
+<div class="st" data-s="3"><b>③ AIロードマップ</b>次にやることが分かる</div>
+</div>
+
+<main>
+
+<!-- ① 目標設定 -->
+<section class="screen on" id="s1">
+<h1>あなたの目標から、AIがロードマップを作成</h1>
+<p class="lead">「何から始めればいいか分からない」を、最初の1分で解消します。</p>
+
+<div class="panel">
+<h2>目標が決まっている方</h2>
+<div class="radios">現在のレベル：
+<label><input type="radio" name="lv" value="0" checked> まったくの未経験</label>
+<label><input type="radio" name="lv" value="1"> 少し経験あり</label>
+<label><input type="radio" name="lv" value="2"> 経験者</label>
+</div>
+<div class="row">
+<input id="goalInput" type="text" placeholder="（例）ゲーム開発者になりたい">
+<button class="btn" id="goBtn">目標を決定</button>
+</div>
+<div class="chips">
+<button class="chip" data-goal="game">ゲーム開発者になりたい</button>
+<button class="chip" data-goal="web">Webサービスを作りたい</button>
+<button class="chip" data-goal="ai">AIエンジニアになりたい</button>
+</div>
+</div>
+
+<div class="panel">
+<h2>まだ目標が決まっていない方は、今の気持ちに近いものを選んでみよう</h2>
+<div class="choices">
+<button class="choice" data-goal="try"><b>プログラミングを体験したい</b><span>まずは向いているか試してみる</span></button>
+<button class="choice" data-goal="job"><b>就職活動に役立てたい</b><span>エンジニア就職に必要な力を知る</span></button>
+<button class="choice" data-goal="check"><b>自分の実力をチェックしたい</b><span>今のランクを確かめる</span></button>
+</div>
+</div>
+</section>
+
+<!-- ② 先輩の体験 -->
+<section class="screen" id="s2">
+<div class="goalbar"><div class="g"><small>あなたの目標</small><span class="goalName"></span></div><button class="link" data-back="1">目標を変更する</button></div>
+<h1>同じ目標を持っていた先輩の体験</h1>
+<p class="lead">先輩が何をして、paizaがどう役に立ったかを見てみよう。</p>
+<div class="articles" id="articles"></div>
+<p class="note">※ デモ用の架空の体験談です。実際のサービスでは、利用者が投稿した体験記事を表示します。</p>
+<div class="cta"><button class="btn" id="toMap">この目標でロードマップを作る</button></div>
+</section>
+
+<!-- ③ ロードマップ -->
+<section class="screen" id="s3">
+<div class="goalbar"><div class="g"><small>あなたの目標</small><span class="goalName"></span></div><button class="link" data-back="2">先輩の体験をもう一度見る</button></div>
+<div class="panel">
+<h2>マイロードマップ</h2>
+<div class="prog"><span style="font-size:14px">達成度</span><span class="pct" id="pct">0%</span><div class="bar"><div id="barFill" style="width:0%"></div></div></div>
+<div class="map" id="map"></div>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px">
+<button class="btn" id="doneBtn">「次はここ」を完了にする（デモ）</button>
+<button class="btn ghost" id="resetBtn">最初からやり直す</button>
+</div>
+<div class="done-msg" id="doneMsg">🎉 ロードマップ完了！目標ランクに到達しました。次は就職・転職サービスで企業を探してみよう。</div>
+</div>
+
+<div class="side">
+<div class="panel ai"><div class="aiic">AI</div><p id="aiMsg"></p></div>
+<div class="panel"><h2>同じ目標の受講者は、こんな機能も活用しています</h2><div class="used" id="used"></div></div>
+</div>
+</section>
+
+</main>
+
+<script>
+const DATA={
+ game:{name:"ゲーム開発者になりたい",
+  steps:[["Python入門","講座"],["Dランク問題","問題"],["C#入門","講座"],["Cランク問題","問題"],["Unity基礎","講座"],["Bランク挑戦","スキルチェック"]],
+  ai:"ゲーム開発ではC#がよく使われます。まずはPythonでプログラミングの基本を学び、C#に進みましょう。目標はBランクです。",
+  used:[["C#入門講座","利用率 82%"],["レベルアップ問題集","利用率 74%"],["スキルチェック","利用率 91%"]],
+  arts:[["A","ゲーム会社 内定（情報系3年）","授業だけでは不安だったけど、Cランクを取ってから自信がついた","大学2年の夏からpaizaを始めました。最初はPythonの講座、そのあとC#に進み、Bランクを取ったことで面接でも実力を説明しやすくなりました。",["C#","Bランク"]],
+   ["K","個人でゲームを公開（2年）","毎日15分の問題で、続ける習慣ができた","何から始めればいいか分からなかったけど、レベルアップ問題集を少しずつ解いて、半年で小さなゲームを作れるようになりました。",["Python","Cランク"]]]},
+ web:{name:"Webサービスを作りたい",
+  steps:[["HTML/CSS入門","講座"],["JavaScript入門","講座"],["Dランク問題","問題"],["SQL入門","講座"],["Cランク問題","問題"],["Bランク挑戦","スキルチェック"]],
+  ai:"Webサービスを作るには、画面（HTML/CSS・JavaScript）とデータ（SQL）の両方が必要です。目標はBランクです。",
+  used:[["JavaScript入門","利用率 88%"],["SQL入門","利用率 69%"],["スキルチェック","利用率 90%"]],
+  arts:[["S","Web系企業 内定（3年）","自分で作ったサイトが就活の話のネタになった","HTMLからJavaScriptへと順番に学び、ポートフォリオを作りました。ランクがあったので、企業からスカウトも届きました。",["JavaScript","Bランク"]],
+   ["T","サークルのサイトを作成（1年）","授業の内容と講座がつながって分かりやすかった","授業で分からなかったところを講座で復習しながら進めたら、サークルのWebサイトを作れるようになりました。",["HTML/CSS","Dランク"]]]},
+ ai:{name:"AIエンジニアになりたい",
+  steps:[["Python入門","講座"],["Dランク問題","問題"],["数学・統計の基礎","講座"],["機械学習入門","講座"],["Cランク問題","問題"],["Bランク挑戦","スキルチェック"]],
+  ai:"AIエンジニアにはPythonとデータ分析の力が大切です。まずPythonの基礎をしっかり固めましょう。目標はBランクです。",
+  used:[["Python入門","利用率 93%"],["機械学習入門","利用率 71%"],["スキルチェック","利用率 89%"]],
+  arts:[["M","AI系企業 インターン（3年）","Pythonの問題を解くうちに、研究でも使えるようになった","Python入門からはじめて、Bランクまで取りました。インターンの選考では、スキルチェックの結果が評価されました。",["Python","Bランク"]],
+   ["Y","データ分析ゼミ（2年）","ロードマップがあったので迷わなかった","何を学べばいいか分からなかったけど、順番が決まっていたので、ゼミの課題にも役立つ力がつきました。",["Python","Cランク"]]]},
+ try:{name:"プログラミングを体験したい",
+  steps:[["プログラミング体験（5分）","講座"],["Python入門","講座"],["Dランク問題","問題"],["向いている職種診断","診断"],["Cランク挑戦","スキルチェック"]],
+  ai:"まずは5分の体験講座から始めましょう。楽しいと感じたら、Python入門へ。最後に、あなたに合う職種を診断します。",
+  used:[["5分体験講座","利用率 95%"],["Python入門","利用率 80%"],["職種診断","利用率 66%"]],
+  arts:[["R","文系からエンジニアへ（3年）","最初は自分に向いていないと思っていた","5分の体験講座が意外と楽しくて、少しずつ続けました。今はエンジニア職を目指して就活をしています。",["未経験から","Cランク"]],
+   ["H","授業の復習に活用（1年）","短い講座なので空き時間にできた","通学中にスマホで講座を見て、授業の内容が分かるようになりました。プログラミングへの苦手意識がなくなりました。",["Python","Dランク"]]]},
+ job:{name:"就職活動に役立てたい",
+  steps:[["職種を知る（記事）","読む"],["Python入門","講座"],["Dランク問題","問題"],["Cランク問題","問題"],["Bランク挑戦","スキルチェック"],["企業を探す","就職"]],
+  ai:"エンジニア就職では、Bランク以上があると応募できる企業が大きく増えます。まず職種を知ってから、Bランクを目指しましょう。",
+  used:[["スキルチェック","利用率 94%"],["paiza就活","利用率 72%"],["模擬面接記事","利用率 58%"]],
+  arts:[["N","IT企業 内定（3年）","ランクが自分の実力の証明になった","何をアピールすればいいか分からなかったけど、Bランクを取ったことで、面接で具体的に話せるようになりました。",["Bランク","就活"]],
+   ["O","インターン参加（2年）","早めに始めて良かった","2年生のうちにCランクまで取ったので、インターンの応募に自信が持てました。",["Cランク","インターン"]]]},
+ check:{name:"自分の実力をチェックしたい",
+  steps:[["Dランク スキルチェック","スキルチェック"],["苦手分野の講座","講座"],["Cランク スキルチェック","スキルチェック"],["レベルアップ問題集","問題"],["Bランク挑戦","スキルチェック"]],
+  ai:"まずDランクのスキルチェックで今の実力を確認しましょう。結果から、苦手な分野の講座をAIがおすすめします。",
+  used:[["スキルチェック","利用率 97%"],["レベルアップ問題集","利用率 76%"],["解説動画","利用率 61%"]],
+  arts:[["E","情報系2年","苦手が分かって勉強しやすくなった","スキルチェックで配列が苦手だと分かり、その講座だけ集中して学びました。1か月でCランクに上がりました。",["Cランク","苦手克服"]],
+   ["W","情報系3年","目に見えるランクがやる気になった","ランクが上がるのがゲームみたいで楽しく、気づいたら毎日問題を解いていました。",["Bランク","継続"]]]}
+};
+let cur=null,doneCount=0;
+
+function show(n){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id==='s'+n));
+ document.querySelectorAll('.st').forEach(s=>s.classList.toggle('on',s.dataset.s==n));
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function pick(key){
+ cur=DATA[key];
+ const lv=+document.querySelector('input[name=lv]:checked').value;
+ doneCount=Math.min(lv,cur.steps.length-1);
+ document.querySelectorAll('.goalName').forEach(e=>e.textContent=cur.name);
+ document.getElementById('articles').innerHTML=cur.arts.map(a=>`
+  <div class="art"><div class="who"><div class="av">${a[0]}</div><div><b>${a[0]}さん</b><span>${a[1]}</span></div></div>
+  <h3>「${a[2]}」</h3><p>${a[3]}</p><div class="tags">${a[4].map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>`).join('');
+ document.getElementById('aiMsg').textContent=cur.ai;
+ document.getElementById('used').innerHTML=cur.used.map(u=>`<div><b>${u[1]}</b>${u[0]}</div>`).join('');
+ show(2);
+}
+function guess(text){
+ if(/ゲーム|game|unity/i.test(text))return'game';
+ if(/web|ウェブ|サイト|サービス|アプリ/i.test(text))return'web';
+ if(/ai|機械学習|データ/i.test(text))return'ai';
+ if(/就職|就活|仕事/.test(text))return'job';
+ if(/実力|ランク|チェック/.test(text))return'check';
+ return'try';
+}
+function renderMap(){
+ const n=cur.steps.length;
+ document.getElementById('map').innerHTML=cur.steps.map((s,i)=>{
+  const st=i<doneCount?'done':i===doneCount?'next':'todo';
+  const lab=st==='done'?'✓ 完了':st==='next'?'▶ 次はここ':'';
+  return (i?'<div class="arrow">→</div>':'')+`<div class="node"><div class="box ${st}">${s[0]}<small>${s[1]}</small></div><div class="lab ${st}">${lab}</div></div>`;
+ }).join('');
+ const p=Math.round(doneCount/n*100);
+ document.getElementById('pct').textContent=p+'%';
+ document.getElementById('barFill').style.width=p+'%';
+ document.getElementById('doneBtn').disabled=doneCount>=n;
+ document.getElementById('doneMsg').style.display=doneCount>=n?'block':'none';
+}
+document.querySelectorAll('[data-goal]').forEach(b=>b.onclick=()=>pick(b.dataset.goal));
+document.getElementById('goBtn').onclick=()=>{
+ const t=document.getElementById('goalInput').value.trim();
+ pick(t?guess(t):'try');
+ if(t)document.querySelectorAll('.goalName').forEach(e=>e.textContent=t);
+};
+document.getElementById('toMap').onclick=()=>{renderMap();show(3)};
+document.getElementById('doneBtn').onclick=()=>{doneCount++;renderMap()};
+document.getElementById('resetBtn').onclick=()=>{doneCount=0;renderMap()};
+document.querySelectorAll('[data-back]').forEach(b=>b.onclick=()=>show(b.dataset.back));
+</script>
+</body>
+</html>
